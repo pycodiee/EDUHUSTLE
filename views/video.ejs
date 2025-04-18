@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Videos - EduTrack</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Top Navigation (Same as original) -->
+    <nav class="bg-white border-b px-6 py-3">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="text-2xl font-semibold text-indigo-900">EduTrack - Tutor</div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="relative">
+                    <i data-feather="search" class="absolute left-3 top-2.5 h-4 w-4 text-gray-400"></i>
+                    <input type="text" placeholder="Search videos..." 
+                        class="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"/>
+                </div>
+                <button class="p-2 rounded-full hover:bg-gray-100">
+                    <i data-feather="bell" class="h-5 w-5 text-gray-600"></i>
+                </button>
+                <div class="flex items-center gap-2">
+                    <img id="tutorAvatar" src="/api/placeholder/32/32" class="h-8 w-8 rounded-full" alt="Profile"/>
+                    <span id="tutorName" class="text-sm font-medium">Dr. Smith</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex">
+        <!-- Sidebar (Same as original) -->
+        <aside class="w-64 bg-white border-r min-h-screen p-4">
+            <div class="space-y-4">
+                <div class="px-3 py-2 text-sm font-medium text-gray-600">Dashboard</div>
+                <a href="index.html" class="flex items-center gap-3 px-3 py-2 w-full rounded-lg text-gray-600 hover:bg-gray-50">
+                    <i data-feather="home" class="h-5 w-5"></i>
+                    Overview
+                </a>
+                <button class="flex items-center gap-3 px-3 py-2 w-full rounded-lg text-gray-600 hover:bg-gray-50">
+                    <i data-feather="book" class="h-5 w-5"></i>
+                    My Courses
+                </button>
+                <button class="flex items-center gap-3 px-3 py-2 w-full rounded-lg bg-indigo-50 text-indigo-600">
+                    <i data-feather="video" class="h-5 w-5"></i>
+                    Videos
+                </button>
+                <button class="flex items-center gap-3 px-3 py-2 w-full rounded-lg text-gray-600 hover:bg-gray-50">
+                    <i data-feather="calendar" class="h-5 w-5"></i>
+                    Schedule
+                </button>
+                <button class="flex items-center gap-3 px-3 py-2 w-full rounded-lg text-gray-600 hover:bg-gray-50">
+                    <i data-feather="users" class="h-5 w-5"></i>
+                    Students
+                </button>
+                <button class="flex items-center gap-3 px-3 py-2 w-full rounded-lg text-gray-600 hover:bg-gray-50">
+                    <i data-feather="settings" class="h-5 w-5"></i>
+                    Settings
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6">
+            <div class="mb-6">
+                <h1 class="text-2xl font-semibold text-gray-900">Course Videos</h1>
+                <p class="text-gray-600">Manage and view your uploaded course videos</p>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="bg-white rounded-lg shadow p-6 mb-6">
+                <div class="flex gap-4">
+                    <div class="flex-1">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Course</label>
+                        <select id="courseFilter" class="w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md">
+                            <option value="">All Courses</option>
+                        </select>
+                    </div>
+                    <div class="flex-1">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Sort By</label>
+                        <select id="sortFilter" class="w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md">
+                            <option value="newest">Newest First</option>
+                            <option value="oldest">Oldest First</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Videos Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="videosGrid">
+                <!-- Videos will be dynamically inserted here -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Video Modal -->
+    <div id="videoModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg max-w-4xl w-full mx-4">
+            <div class="p-4 border-b flex justify-between items-center">
+                <h3 class="text-lg font-semibold" id="modalVideoTitle"></h3>
+                <button onclick="closeVideoModal()" class="text-gray-500 hover:text-gray-700">
+                    <i data-feather="x" class="h-5 w-5"></i>
+                </button>
+            </div>
+            <div class="p-4">
+                <video id="modalVideo" controls class="w-full">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Feather Icons
+        feather.replace();
+
+        // Fetch and display videos
+        async function fetchVideos() {
+            try {
+                const courseFilter = document.getElementById('courseFilter').value;
+                const sortFilter = document.getElementById('sortFilter').value;
+                
+                const response = await fetch(`${API_URL}/videos?course=${courseFilter}&sort=${sortFilter}`);
+                const videos = await response.json();
+                
+                const videosGrid = document.getElementById('videosGrid');
+                videosGrid.innerHTML = videos.map(video => `
+                    <div class="bg-white rounded-lg shadow overflow-hidden">
+                        <div class="aspect-w-16 aspect-h-9 bg-gray-100">
+                            <video class="w-full h-48 object-cover">
+                                <source src="${API_URL}/videos/stream/${video.id}" type="${video.mimetype}">
+                            </video>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-medium text-gray-900 mb-1">${video.filename}</h3>
+                            <p class="text-sm text-gray-500 mb-2">Uploaded ${new Date(video.uploaded_at).toLocaleDateString()}</p>
+                            <div class="flex gap-2">
+                                <button onclick="playVideo('${video.id}', '${video.filename}')" 
+                                    class="flex-1 px-3 py-1 bg-indigo-600 text-white rounded hover:bg-indigo-700 text-sm">
+                                    Play
+                                </button>
+                                <button onclick="deleteVideo('${video.id}')" 
+                                    class="px-3 py-1 text-red-600 border border-red-600 rounded hover:bg-red-50 text-sm">
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                // Re-initialize Feather icons
+                feather.replace();
+            } catch (error) {
+                console.error('Error fetching videos:', error);
+            }
+        }
+
+        // Fetch courses for filter
+        async function fetchCourses() {
+            try {
+                const response = await fetch(`${API_URL}/tutor/courses`);
+                const courses = await response.json();
+                
+                const courseFilter = document.getElementById('courseFilter');
+                courseFilter.innerHTML += courses.map(course => 
+                    `<option value="${course.id}">${course.name}</option>`
+                ).join('');
+            } catch (error) {
+                console.error('Error fetching courses:', error);
+            }
+        }
+
+        // Video modal functions
+        function playVideo(videoId, videoTitle) {
+            const modal = document.getElementById('videoModal');
+            const modalVideo = document.getElementById('modalVideo');
+            const modalTitle = document.getElementById('modalVideoTitle');
+            
+            modalVideo.src = `${API_URL}/videos/stream/${videoId}`;
+            modalTitle.textContent = videoTitle;
+            modal.classList.remove('hidden');
+        }
+
+        function closeVideoModal() {
+            const modal = document.getElementById('videoModal');
+            const modalVideo = document.getElementById('modalVideo');
+            
+            modalVideo.pause();
+            modalVideo.src = '';
+            modal.classList.add('hidden');
+        }
+
+        async function deleteVideo(videoId) {
+            if (confirm('Are you sure you want to delete this video?')) {
+                try {
+                    const response = await fetch(`${API_URL}/videos/${videoId}`, {
+                        method: 'DELETE'
+                    });
+                    if (response.ok) {
+                        fetchVideos();
+                    }
+                } catch (error) {
+                    console.error('Error deleting video:', error);
+                }
+            }
+        }
+
+        // Event listeners
+        document.getElementById('courseFilter').addEventListener('change', fetchVideos);
+        document.getElementById('sortFilter').addEventListener('change', fetchVideos);
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchCourses();
+            fetchVideos();
+        });
+    </script>
+</body>
+</html>

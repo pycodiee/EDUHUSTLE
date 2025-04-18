@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - EduHustle</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Top Navigation -->
+    <nav class="bg-white border-b px-6 py-3">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="text-2xl font-semibold text-blue-900">EduHustle</div>
+            </div>
+            
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white border-r min-h-screen p-4">
+            <div class="space-y-4">
+                <div class="px-3 py-2 text-sm font-medium text-gray-600">Dashboard</div>
+                <button class="flex items-center gap-3 px-3 py-2 w-full rounded-lg bg-blue-50 text-blue-600">
+                    <i data-feather="home" class="h-5 w-5"></i>
+                    Overview
+                </button>
+                <button class="flex items-center gap-3 px-3 py-2 w-full rounded-lg text-gray-600 hover:bg-gray-50">
+                    <a href="/courses" class="flex items-center gap-3 w-full h-full">
+                        <i data-feather="book" class="h-5 w-5"></i>
+                        My Courses
+                    </a>
+                </button>
+                
+                <button class="flex items-center gap-3 px-3 py-2 w-full rounded-lg text-gray-600 hover:bg-gray-50">
+                    <a href="/shedule" class="flex items-center gap-3 w-full h-full">
+                        <i data-feather="book" class="h-5 w-5"></i>
+                        My Schedule
+                    </a>
+                </button>
+                <button class="flex items-center gap-3 px-3 py-2 w-full rounded-lg text-gray-600 hover:bg-gray-50">
+                    <a href="/quiz" class="flex items-center gap-3 w-full h-full">
+                        <i data-feather="book" class="h-5 w-5"></i>
+                        Quiz
+                    </a>
+                </button>
+                <button class="flex items-center gap-3 px-3 py-2 w-full rounded-lg text-gray-600 hover:bg-gray-50">
+                    <a href="/chatbot" target="_blank" style="position: fixed; bottom: 30px; right: 30px; background: #724ae8; color: white; padding: 12px 16px; border-radius: 50px; font-family: Poppins, sans-serif; text-decoration: none; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">Chat with Us</a>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6">
+            <!-- Profile Setup Section -->
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h2 class="text-2xl font-semibold mb-4">Profile Setup</h2>
+                <form id="profileForm" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Full Name</label>
+                            <input type="text" name="fullName" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Email</label>
+                            <input type="email" name="email" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">LinkedIn Profile</label>
+                            <input type="url" name="linkedin" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">GitHub Profile</label>
+                            <input type="url" name="github" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                    </div>
+
+                    <!-- Programming Languages -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Programming Languages</label>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" name="languages" value="javascript" class="rounded text-blue-600">
+                                <span>JavaScript</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" name="languages" value="python" class="rounded text-blue-600">
+                                <span>Python</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" name="languages" value="java" class="rounded text-blue-600">
+                                <span>Java</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" name="languages" value="cpp" class="rounded text-blue-600">
+                                <span>C++</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Technical Tools -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Technical Tools</label>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" name="tools" value="git" class="rounded text-blue-600">
+                                <span>Git</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" name="tools" value="docker" class="rounded text-blue-600">
+                                <span>Docker</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" name="tools" value="aws" class="rounded text-blue-600">
+                                <span>AWS</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" name="tools" value="react" class="rounded text-blue-600">
+                                <span>React</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Completed Courses -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Completed Courses</label>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" name="completedCourses" value="web_basics" class="rounded text-green-600">
+                                <span>Web Development Basics</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" name="completedCourses" value="javascript" class="rounded text-green-600">
+                                <span>JavaScript Fundamentals</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" name="completedCourses" value="python_basics" class="rounded text-green-600">
+                                <span>Python Basics</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" name="completedCourses" value="data_structures" class="rounded text-green-600">
+                                <span>Data Structures</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" name="completedCourses" value="algorithms" class="rounded text-green-600">
+                                <span>Algorithms</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" name="completedCourses" value="database" class="rounded text-green-600">
+                                <span>Database Management</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                        Save Profile
+                    </button>
+                </form>
+            </div>
+
+            <!-- Skills Progress -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <!-- Selected Languages Progress -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-lg font-semibold mb-4">Selected Languages</h3>
+                    <div id="selectedLanguages" class="space-y-4">
+                        <!-- Will be populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- Selected Tools Progress -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-lg font-semibold mb-4">Selected Tools</h3>
+                    <div id="selectedTools" class="space-y-4">
+                        <!-- Will be populated dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Course Completion -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-lg font-semibold mb-4">Course Completion Status</h3>
+                <div id="courseProgress" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Will be populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Add this after the Course Completion section -->
+            <div class="bg-white rounded-lg shadow-md p-6 mt-6">
+                <h3 class="text-lg font-semibold mb-4">Your Learning Track</h3>
+                
+                <!-- Learning Progress Summary -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <h4 class="font-medium text-blue-800 mb-2">Language Mastery</h4>
+                        <div id="languageMastery" class="space-y-2">
+                            <!-- Will be populated dynamically -->
+                        </div>
+                    </div>
+                    
+                    <div class="bg-green-50 p-4 rounded-lg">
+                        <h4 class="font-medium text-green-800 mb-2">Course Progress</h4>
+                        <div id="courseProgress" class="space-y-2">
+                            <!-- Will be populated dynamically -->
+                        </div>
+                    </div>
+                    
+                    <div class="bg-purple-50 p-4 rounded-lg">
+                        <h4 class="font-medium text-purple-800 mb-2">Skill Development</h4>
+                        <div id="skillProgress" class="space-y-2">
+                            <!-- Will be populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recommended Courses -->
+                <div>
+                    <h4 class="font-medium text-gray-800 mb-3">Recommended Next Steps</h4>
+                    <div id="recommendations" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <!-- Will be populated dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add this after your existing Learning Track section -->
+            <div class="bg-white rounded-lg shadow-md p-6 mt-6">
+                <h3 class="text-lg font-semibold mb-4">Skills Tracker</h3>
+                
+                <!-- Selected Languages Progress -->
+                <div class="mb-6">
+                    <h4 class="text-md font-medium text-gray-700 mb-3">Programming Languages Progress</h4>
+                    <div id="selectedLanguagesProgress" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Will be populated dynamically -->
+                    </div>
+                </div>
+                
+                <!-- Selected Tools Progress -->
+                <div>
+                    <h4 class="text-md font-medium text-gray-700 mb-3">Technical Tools Progress</h4>
+                    <div id="selectedToolsProgress" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Will be populated dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add this after Skills Progress section -->
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h3 class="text-lg font-semibold mb-4">Course Completion Progress</h3>
+                <div id="courseCompletionProgress" class="space-y-4">
+                    <!-- Will be populated dynamically -->
+                </div>
+                <div class="mt-4">
+                    <div class="flex justify-between items-center text-sm text-gray-600">
+                        <span>Overall Progress</span>
+                        <span id="overallCourseProgress">0%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5 mt-1">
+                        <div id="overallProgressBar" class="bg-green-600 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Initialize Feather Icons
+        feather.replace();
+
+        // Load user profile data
+        async function loadProfile() {
+            try {
+                const response = await fetch('/api/user/profile');
+                const user = await response.json();
+                
+                // Fill form fields
+                document.querySelector('[name="fullName"]').value = user.full_name || '';
+                document.querySelector('[name="email"]').value = user.email || '';
+                document.querySelector('[name="linkedin"]').value = user.linkedin_url || '';
+                document.querySelector('[name="github"]').value = user.github_url || '';
+
+                // Check languages and tools
+                if (user.languages) {
+                    const languages = JSON.parse(user.languages);
+                    languages.forEach(lang => {
+                        const checkbox = document.querySelector(`[name="languages"][value="${lang}"]`);
+                        if (checkbox) checkbox.checked = true;
+                    });
+                }
+
+                if (user.tools) {
+                    const tools = JSON.parse(user.tools);
+                    tools.forEach(tool => {
+                        const checkbox = document.querySelector(`[name="tools"][value="${tool}"]`);
+                        if (checkbox) checkbox.checked = true;
+                    });
+                }
+
+                updateProgress(user);
+            } catch (error) {
+                console.error('Error loading profile:', error);
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            
+            // Get selected languages, tools, and completed courses
+            const languages = [...document.querySelectorAll('[name="languages"]:checked')].map(cb => cb.value);
+            const tools = [...document.querySelectorAll('[name="tools"]:checked')].map(cb => cb.value);
+            const completedCourses = [...document.querySelectorAll('[name="completedCourses"]:checked')].map(cb => cb.value);
+
+            // Create the request body
+            const data = {
+                fullName: formData.get('fullName'),
+                email: formData.get('email'),
+                linkedin: formData.get('linkedin'),
+                github: formData.get('github'),
+                languages: languages,
+                tools: tools,
+                completedCourses: completedCourses
+            };
+
+            try {
+                const response = await fetch('/api/user/profile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    // Update all progress displays
+                    updateSelectedSkills(languages, tools);
+                    updateCourseProgress(completedCourses);
+                    
+                    alert('Profile updated successfully!');
+                } else {
+                    alert('Error updating profile');
+                }
+            } catch (error) {
+                console.error('Error updating profile:', error);
+                alert('Error updating profile');
+            }
+        });
+
+        function updateSelectedSkills(languages, tools) {
+            // Update Languages
+            const languagesContainer = document.getElementById('selectedLanguages');
+            languagesContainer.innerHTML = languages.map(lang => {
+                const progress = calculateInitialProgress(languages.length);
+                return `
+                    <div class="border rounded-lg p-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-medium">${lang}</span>
+                            <span class="text-sm text-blue-600">${progress}% Started</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-blue-600 h-2 rounded-full transition-all duration-500" style="width: ${progress}%"></div>
+                        </div>
+                        <div class="mt-2 flex justify-between text-sm">
+                            <span class="text-gray-600">Level: ${getLevel(progress)}</span>
+                            <span class="text-gray-600">${languages.length} languages selected</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Update Tools
+            const toolsContainer = document.getElementById('selectedTools');
+            toolsContainer.innerHTML = tools.map(tool => {
+                const progress = calculateInitialProgress(tools.length);
+                return `
+                    <div class="border rounded-lg p-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-medium">${tool}</span>
+                            <span class="text-sm text-purple-600">${progress}% Started</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-purple-600 h-2 rounded-full transition-all duration-500" style="width: ${progress}%"></div>
+                        </div>
+                        <div class="mt-2 flex justify-between text-sm">
+                            <span class="text-gray-600">Level: ${getLevel(progress)}</span>
+                            <span class="text-gray-600">${tools.length} tools selected</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Update the learning track section if it exists
+            updateLearningTrackSection(languages, tools);
+        }
+
+        // Add these helper functions
+        function calculateInitialProgress(itemCount) {
+            // Calculate progress based on number of items selected
+            // More items selected = higher initial progress
+            const baseProgress = 10; // Base progress for selecting any item
+            const progressPerItem = 5; // Additional progress per item
+            return Math.min(baseProgress + (itemCount * progressPerItem), 100);
+        }
+
+        function getLevel(progress) {
+            if (progress >= 80) return 'Advanced';
+            if (progress >= 50) return 'Intermediate';
+            if (progress >= 20) return 'Beginner+';
+            return 'Beginner';
+        }
+
+        function updateLearningTrackSection(languages, tools) {
+            const languageMastery = document.getElementById('languageMastery');
+            if (languageMastery) {
+                languageMastery.innerHTML = languages.map(lang => {
+                    const progress = calculateInitialProgress(languages.length);
+                    return `
+                        <div>
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-sm font-medium">${lang}</span>
+                                <span class="text-sm">${progress}%</span>
+                            </div>
+                            <div class="w-full bg-blue-200 rounded-full h-2">
+                                <div class="bg-blue-600 h-2 rounded-full transition-all duration-500" 
+                                     style="width: ${progress}%"></div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            const skillProgress = document.getElementById('skillProgress');
+            if (skillProgress) {
+                skillProgress.innerHTML = tools.map(tool => {
+                    const progress = calculateInitialProgress(tools.length);
+                    return `
+                        <div>
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-sm font-medium">${tool}</span>
+                                <span class="text-sm">Level ${Math.ceil(progress/20)}</span>
+                            </div>
+                            <div class="text-xs text-purple-600">
+                                ${Math.floor(progress/10)} projects available
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        // Load selected skills when page loads
+        async function loadSelectedSkills() {
+            try {
+                const response = await fetch('/api/user/profile');
+                const user = await response.json();
+                
+                if (user.languages && user.tools) {
+                    const languages = typeof user.languages === 'string' ? 
+                        JSON.parse(user.languages) : user.languages;
+                    const tools = typeof user.tools === 'string' ? 
+                        JSON.parse(user.tools) : user.tools;
+                    const completedCourses = typeof user.completed_courses === 'string' ? 
+                        JSON.parse(user.completed_courses) : user.completed_courses || [];
+
+                    // Check the appropriate checkboxes
+                    languages.forEach(lang => {
+                        const checkbox = document.querySelector(`[name="languages"][value="${lang}"]`);
+                        if (checkbox) checkbox.checked = true;
+                    });
+
+                    tools.forEach(tool => {
+                        const checkbox = document.querySelector(`[name="tools"][value="${tool}"]`);
+                        if (checkbox) checkbox.checked = true;
+                    });
+
+                    completedCourses.forEach(course => {
+                        const checkbox = document.querySelector(`[name="completedCourses"][value="${course}"]`);
+                        if (checkbox) checkbox.checked = true;
+                    });
+
+                    // Update all progress displays
+                    updateSelectedSkills(languages, tools);
+                    updateCourseProgress(completedCourses);
+                }
+            } catch (error) {
+                console.error('Error loading selected skills:', error);
+            }
+        }
+
+        // Call this when page loads
+        document.addEventListener('DOMContentLoaded', loadSelectedSkills);
+
+        // Load profile when page loads
+        loadProfile();
+
+        // Add this function to load learning track
+        async function loadLearningTrack() {
+            try {
+                const response = await fetch('/api/user/learning-track');
+                const data = await response.json();
+                
+                // Update Language Mastery
+                const languageMastery = document.getElementById('languageMastery');
+                languageMastery.innerHTML = data.languages.map(lang => `
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-sm font-medium">${lang.language}</span>
+                            <span class="text-sm">${lang.progress}%</span>
+                        </div>
+                        <div class="w-full bg-blue-200 rounded-full h-2">
+                            <div class="bg-blue-600 h-2 rounded-full" style="width: ${lang.progress}%"></div>
+                        </div>
+                    </div>
+                `).join('');
+                
+                // Update Course Progress
+                const courseProgress = document.getElementById('courseProgress');
+                courseProgress.innerHTML = data.courses.map(course => `
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-sm font-medium">${course.title}</span>
+                            <span class="text-sm">${course.completion_percentage}%</span>
+                        </div>
+                        <div class="w-full bg-green-200 rounded-full h-2">
+                            <div class="bg-green-600 h-2 rounded-full" style="width: ${course.completion_percentage}%"></div>
+                        </div>
+                    </div>
+                `).join('');
+                
+                // Update Skill Progress
+                const skillProgress = document.getElementById('skillProgress');
+                skillProgress.innerHTML = data.skills.map(skill => `
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-sm font-medium">${skill.tool}</span>
+                            <span class="text-sm">Level ${skill.proficiency_level}</span>
+                        </div>
+                        <div class="text-xs text-purple-600">${skill.projects_completed} projects completed</div>
+                    </div>
+                `).join('');
+                
+                // Update Recommendations
+                const recommendations = document.getElementById('recommendations');
+                recommendations.innerHTML = data.recommendations.map(course => `
+                    <div class="bg-white border rounded-lg p-4 hover:shadow-md transition-shadow">
+                        <h5 class="font-medium mb-2">${course.title}</h5>
+                        <p class="text-sm text-gray-600 mb-3">${course.description}</p>
+                        <a href="/courses#${course.id}" class="text-blue-600 text-sm hover:underline">Start Learning →</a>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                console.error('Error loading learning track:', error);
+            }
+        }
+
+        // Add this function to load skills tracker
+        async function loadSkillsTracker() {
+            try {
+                const response = await fetch('/api/user/skills-tracker');
+                const data = await response.json();
+                
+                // Update Languages Progress
+                const languagesProgress = document.getElementById('selectedLanguagesProgress');
+                languagesProgress.innerHTML = data.languages.map(lang => `
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <div class="flex justify-between items-center mb-2">
+                            <h5 class="font-medium text-blue-900">${lang.language}</h5>
+                            <span class="text-sm text-blue-600">${lang.progress}% Complete</span>
+                        </div>
+                        <div class="w-full bg-blue-200 rounded-full h-2.5 mb-2">
+                            <div class="bg-blue-600 h-2.5 rounded-full" style="width: ${lang.progress}%"></div>
+                        </div>
+                        <div class="flex justify-between text-sm text-blue-700">
+                            <span>${lang.completed_courses} Courses Completed</span>
+                            <span>${calculateLevel(lang.progress)}</span>
+                        </div>
+                        <div class="mt-2">
+                            <button onclick="startPractice('${lang.language}')" 
+                                    class="text-sm bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">
+                                Practice Now
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+                
+                // Update Tools Progress
+                const toolsProgress = document.getElementById('selectedToolsProgress');
+                toolsProgress.innerHTML = data.tools.map(tool => `
+                    <div class="bg-purple-50 p-4 rounded-lg">
+                        <div class="flex justify-between items-center mb-2">
+                            <h5 class="font-medium text-purple-900">${tool.tool}</h5>
+                            <span class="text-sm text-purple-600">Level ${tool.proficiency}</span>
+                        </div>
+                        <div class="w-full bg-purple-200 rounded-full h-2.5 mb-2">
+                            <div class="bg-purple-600 h-2.5 rounded-full" 
+                                 style="width: ${(tool.proficiency * 10)}%"></div>
+                        </div>
+                        <div class="flex justify-between text-sm text-purple-700">
+                            <span>${tool.projects} Projects</span>
+                            <span>${calculateToolLevel(tool.proficiency)}</span>
+                        </div>
+                        <div class="mt-2">
+                            <button onclick="startProject('${tool.tool}')"
+                                    class="text-sm bg-purple-600 text-white px-3 py-1 rounded hover:bg-purple-700">
+                                Start Project
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                console.error('Error loading skills tracker:', error);
+            }
+        }
+
+        // Helper functions
+        function calculateLevel(progress) {
+            if (progress >= 80) return 'Advanced';
+            if (progress >= 40) return 'Intermediate';
+            return 'Beginner';
+        }
+
+        function calculateToolLevel(proficiency) {
+            if (proficiency >= 8) return 'Expert';
+            if (proficiency >= 5) return 'Advanced';
+            if (proficiency >= 3) return 'Intermediate';
+            return 'Beginner';
+        }
+
+        // Practice and Project functions
+        async function startPractice(language) {
+            // Implement practice functionality
+            alert(`Starting practice session for ${language}`);
+        }
+
+        async function startProject(tool) {
+            // Implement project functionality
+            alert(`Starting new project with ${tool}`);
+        }
+
+        // Update the DOMContentLoaded event listener
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProfile();
+            loadLearningTrack();
+            loadSkillsTracker();
+        });
+
+        // Add checkbox change event listeners
+        document.querySelectorAll('[name="languages"], [name="tools"]').forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                const languages = [...document.querySelectorAll('[name="languages"]:checked')].map(cb => cb.value);
+                const tools = [...document.querySelectorAll('[name="tools"]:checked')].map(cb => cb.value);
+                
+                // Update the count displays if they exist
+                const langCount = document.getElementById('languageCount');
+                const toolCount = document.getElementById('toolCount');
+                
+                if (langCount) langCount.textContent = `${languages.length} languages selected`;
+                if (toolCount) toolCount.textContent = `${tools.length} tools selected`;
+            });
+        });
+
+        // Add this to your existing JavaScript section
+        function updateCourseProgress(completedCourses) {
+            const courseCompletionProgress = document.getElementById('courseCompletionProgress');
+            const totalCourses = 6; // Total number of available courses
+            
+            // Course details with their weights and categories
+            const courseDetails = {
+                web_basics: { name: 'Web Development Basics', weight: 1, category: 'Web Development' },
+                javascript: { name: 'JavaScript Fundamentals', weight: 1, category: 'Web Development' },
+                python_basics: { name: 'Python Basics', weight: 1, category: 'Programming' },
+                data_structures: { name: 'Data Structures', weight: 1.5, category: 'Computer Science' },
+                algorithms: { name: 'Algorithms', weight: 1.5, category: 'Computer Science' },
+                database: { name: 'Database Management', weight: 1, category: 'Database' }
+            };
+
+            // Calculate overall progress
+            const totalWeight = Object.values(courseDetails).reduce((sum, course) => sum + course.weight, 0);
+            const completedWeight = completedCourses.reduce((sum, course) => sum + (courseDetails[course]?.weight || 0), 0);
+            const overallProgress = Math.round((completedWeight / totalWeight) * 100);
+
+            // Update overall progress display
+            document.getElementById('overallCourseProgress').textContent = `${overallProgress}%`;
+            document.getElementById('overallProgressBar').style.width = `${overallProgress}%`;
+
+            // Group courses by category
+            const coursesByCategory = {};
+            Object.entries(courseDetails).forEach(([id, details]) => {
+                if (!coursesByCategory[details.category]) {
+                    coursesByCategory[details.category] = [];
+                }
+                coursesByCategory[details.category].push({
+                    id,
+                    ...details,
+                    completed: completedCourses.includes(id)
+                });
+            });
+
+            // Generate HTML for course progress
+            courseCompletionProgress.innerHTML = Object.entries(coursesByCategory).map(([category, courses]) => `
+                <div class="mb-4">
+                    <h4 class="font-medium text-gray-700 mb-2">${category}</h4>
+                    ${courses.map(course => `
+                        <div class="mb-2">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-sm">${course.name}</span>
+                                <span class="text-sm ${course.completed ? 'text-green-600' : 'text-gray-500'}">
+                                    ${course.completed ? 'Completed' : 'Not Started'}
+                                </span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-600 h-2 rounded-full transition-all duration-500" 
+                                     style="width: ${course.completed ? '100%' : '0%'}"></div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>

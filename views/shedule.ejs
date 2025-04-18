@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Schedule</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
+    <div class="bg-white shadow-lg rounded-lg p-6 w-full max-w-4xl">
+        <h2 class="text-2xl font-bold mb-6 text-center">Class Schedule Management</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Class Input Section -->
+            <div>
+                <form id="classForm" class="space-y-4">
+                    <div>
+                        <label for="className" class="block text-gray-700 font-medium mb-2">Class Name</label>
+                        <input type="text" id="className" name="className" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400" placeholder="Enter class name">
+                    </div>
+                    
+                    <div>
+                        <label for="classDay" class="block text-gray-700 font-medium mb-2">Day</label>
+                        <select id="classDay" name="classDay" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                            <option value="Monday">Monday</option>
+                            <option value="Tuesday">Tuesday</option>
+                            <option value="Wednesday">Wednesday</option>
+                            <option value="Thursday">Thursday</option>
+                            <option value="Friday">Friday</option>
+                            <option value="Saturday">Saturday</option>
+                            <option value="Sunday">Sunday</option>
+                        </select>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="startTime" class="block text-gray-700 font-medium mb-2">Start Time</label>
+                            <input type="time" id="startTime" name="startTime" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                        </div>
+                        <div>
+                            <label for="endTime" class="block text-gray-700 font-medium mb-2">End Time</label>
+                            <input type="time" id="endTime" name="endTime" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="classLocation" class="block text-gray-700 font-medium mb-2">Location</label>
+                        <input type="text" id="classLocation" name="classLocation" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400" placeholder="Enter class location">
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-indigo-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2">
+                        Add Class
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Schedule Display Section -->
+            <div>
+                <h3 class="text-xl font-semibold mb-4">Your Schedule</h3>
+                <div id="scheduleList" class="space-y-3">
+                    <!-- Dynamically populated schedule items will appear here -->
+                    <p class="text-gray-500 text-center">No classes added yet</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('classForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const className = document.getElementById('className').value;
+            const classDay = document.getElementById('classDay').value;
+            const startTime = document.getElementById('startTime').value;
+            const endTime = document.getElementById('endTime').value;
+            const classLocation = document.getElementById('classLocation').value;
+            
+            // Create schedule item
+            const scheduleList = document.getElementById('scheduleList');
+            const scheduleItem = document.createElement('div');
+            scheduleItem.classList.add('bg-gray-100', 'p-3', 'rounded-lg', 'flex', 'justify-between', 'items-center');
+            
+            scheduleItem.innerHTML = `
+                <div>
+                    <h4 class="font-bold">${className}</h4>
+                    <p class="text-sm text-gray-600">${classDay}, ${startTime} - ${endTime}</p>
+                    <p class="text-sm text-gray-500">${classLocation}</p>
+                </div>
+                <button class="text-red-500 hover:text-red-700 delete-class">
+                    Delete
+                </button>
+            `;
+            
+            // Remove "No classes" message
+            const noClassesMessage = scheduleList.querySelector('p');
+            if (noClassesMessage) {
+                noClassesMessage.remove();
+            }
+            
+            // Add delete functionality
+            scheduleItem.querySelector('.delete-class').addEventListener('click', function() {
+                scheduleItem.remove();
+                
+                // If no items left, add "No classes" message
+                if (scheduleList.children.length === 0) {
+                    const noClassesMessage = document.createElement('p');
+                    noClassesMessage.classList.add('text-gray-500', 'text-center');
+                    noClassesMessage.textContent = 'No classes added yet';
+                    scheduleList.appendChild(noClassesMessage);
+                }
+            });
+            
+            // Add to schedule list
+            scheduleList.appendChild(scheduleItem);
+            
+            // Reset form
+            this.reset();
+        });
+    </script>
+</body>
+</html>

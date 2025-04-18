@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Quiz App</title>
+    <style>
+        :root {
+            --primary-color: #4a4a4a;
+            --secondary-color: #6a6a6a;
+            --accent-color: #3498db;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body,
+        html {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #3494E6, #15309a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            z-index: -1;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Floating Shapes */
+        .floating-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float-shapes 20s linear infinite;
+        }
+
+        @keyframes float-shapes {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            100% {
+                transform: translateY(-150vh) rotate(720deg);
+            }
+        }
+
+        .container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            z-index: 10;
+        }
+
+        .quiz-box {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Username Screen */
+        #username-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #username-input {
+            width: 100%;
+            padding: 10px;
+            margin: 20px 0;
+            border: 2px solid var(--accent-color);
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        /* Quiz Screen */
+        #quiz-screen {
+            display: none;
+        }
+
+        .timer {
+            font-size: 18px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .question {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .option {
+            background-color: #f1f1f1;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .option:hover {
+            background-color: #e0e0e0;
+            transform: scale(1.05);
+        }
+
+        .option.selected {
+            background-color: var(--accent-color);
+            color: white;
+            border-color: white;
+        }
+
+        .btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        /* Results Screen */
+        #results-screen {
+            display: none;
+            text-align: center;
+        }
+
+        .result-details {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation"></div>
+    <div class="floating-shapes"></div>
+
+    <div class="container">
+        <div class="quiz-box">
+            <!-- Username Screen -->
+            <div id="username-screen">
+                <h2>Welcome to the Quiz!</h2>
+                <input type="text" id="username-input" placeholder="Enter your username">
+                <button id="start-btn" class="btn">Start Quiz</button>
+            </div>
+
+            <!-- Quiz Screen -->
+            <div id="quiz-screen">
+                <div class="timer" id="timer">Time Left: 30 seconds</div>
+                <div class="question" id="question-text"></div>
+                <div class="options" id="options-container"></div>
+                <button id="next-btn" class="btn" disabled>Next Question</button>
+            </div>
+
+            <!-- Results Screen -->
+            <div id="results-screen">
+                <h2>Quiz Completed!</h2>
+                <div class="result-details">
+                    <p id="username-display"></p>
+                    <p id="score-display"></p>
+                </div>
+                <button id="restart-btn" class="btn">Restart Quiz</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating shapes
+        function createFloatingShapes() {
+            const shapesContainer = document.querySelector('.floating-shapes');
+            for (let i = 0; i < 20; i++) {
+                const shape = document.createElement('div');
+                shape.classList.add('shape');
+
+                // Randomize shape properties
+                shape.style.width = `${Math.random() * 100 + 20}px`;
+                shape.style.height = shape.style.width;
+                shape.style.left = `${Math.random() * 100}%`;
+                shape.style.animationDuration = `${Math.random() * 20 + 10}s`;
+                shape.style.opacity = Math.random();
+
+                shapesContainer.appendChild(shape);
+            }
+        }
+        createFloatingShapes();
+
+        // Quiz Data
+        const quizData = [
+    {
+        question: "Which programming language is primarily used for iOS app development?",
+        options: ["Swift", "Python", "JavaScript", "C#"],
+        correctAnswer: "Swift"
+    },
+    {
+        question: "What does HTML stand for?",
+        options: [
+            "Hyper Text Markup Language",
+            "High Transfer Machine Language",
+            "Hyperlink Text Management Language",
+            "Hyper Transfer Markup Language"
+        ],
+        correctAnswer: "Hyper Text Markup Language"
+    },
+    {
+        question: "Which company developed the Java programming language?",
+        options: ["Microsoft", "Sun Microsystems", "Oracle", "Google"],
+        correctAnswer: "Sun Microsystems"
+    },
+    {
+        question: "What is the primary use of CSS in web development?",
+        options: ["Data storage", "Server-side scripting", "Design and layout", "Database management"],
+        correctAnswer: "Design and layout"
+    },
+    {
+        question: "Which of the following is a NoSQL database?",
+        options: ["PostgreSQL", "MongoDB", "MySQL", "SQLite"],
+        correctAnswer: "MongoDB"
+    },
+    {
+        question: "What does the acronym 'API' stand for?",
+        options: [
+            "Application Programming Interface",
+            "Automated Program Integration",
+            "Advanced Protocol Interaction",
+            "Application Protocol Integration"
+        ],
+        correctAnswer: "Application Programming Interface"
+    },
+    {
+        question: "Which of these is a JavaScript framework?",
+        options: ["Django", "React", "Flask", "Laravel"],
+        correctAnswer: "React"
+    },
+    {
+        question: "What is the purpose of Git in development?",
+        options: [
+            "Version control",
+            "Design and layout",
+            "Database management",
+            "Data encryption"
+        ],
+        correctAnswer: "Version control"
+    },
+    {
+        question: "What is the command to initialize a Git repository?",
+        options: ["git init", "git start", "git create", "git repo"],
+        correctAnswer: "git init"
+    },
+    {
+        question: "Which of the following is a cloud computing platform?",
+        options: ["Docker", "AWS", "React", "TensorFlow"],
+        correctAnswer: "AWS"
+    }
+];
+
+
+        // DOM Elements
+        const usernameScreen = document.getElementById('username-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultsScreen = document.getElementById('results-screen');
+        const usernameInput = document.getElementById('username-input');
+        const startBtn = document.getElementById('start-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const nextBtn = document.getElementById('next-btn');
+        const timerDisplay = document.getElementById('timer');
+        const usernameFinalDisplay = document.getElementById('username-display');
+        const scoreFinalDisplay = document.getElementById('score-display');
+
+        // Quiz State Variables
+        let currentQuestion = 0;
+        let score = 0;
+        let timer;
+        let timeLeft = 30;
+        let username = '';
+
+        // Start Quiz Functionality
+        startBtn.addEventListener('click', startQuiz);
+        restartBtn.addEventListener('click', resetQuiz);
+
+        function startQuiz() {
+            username = usernameInput.value.trim();
+            if (username) {
+                usernameScreen.style.display = 'none';
+                quizScreen.style.display = 'block';
+                loadQuestion();
+                startTimer();
+            } else {
+                alert('Please enter a username');
+            }
+        }
+
+        // Load Question
+        function loadQuestion() {
+            const currentQuizData = quizData[currentQuestion];
+            questionText.textContent = currentQuizData.question;
+
+            // Clear previous options
+            optionsContainer.innerHTML = '';
+
+            // Create option buttons
+            currentQuizData.options.forEach(option => {
+                const optionBtn = document.createElement('div');
+                optionBtn.classList.add('option');
+                optionBtn.textContent = option;
+                optionBtn.addEventListener('click', () => selectOption(optionBtn));
+                optionsContainer.appendChild(optionBtn);
+            });
+
+            // Reset UI
+            nextBtn.disabled = true;
+            resetTimer();
+        }
+
+        // Option Selection
+        function selectOption(selectedOption) {
+            // Remove selected class from all options
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+
+            // Add selected class to clicked option
+            selectedOption.classList.add('selected');
+            nextBtn.disabled = false;
+        }
+
+        // Next Question
+        nextBtn.addEventListener('click', moveToNextQuestion);
+
+        function moveToNextQuestion() {
+            // Check selected answer
+            const selectedOption = document.querySelector('.option.selected');
+            if (selectedOption) {
+                const currentQuizData = quizData[currentQuestion];
+                if (selectedOption.textContent === currentQuizData.correctAnswer) {
+                    score++;
+                }
+
+                // Move to next question or end quiz
+                currentQuestion++;
+                if (currentQuestion < quizData.length) {
+                    loadQuestion();
+                } else {
+                    endQuiz();
+                }
+            }
+        }
+
+        // Timer Functionality
+        function startTimer() {
+            timerDisplay.textContent = `Time Left: ${timeLeft} seconds`;
+            timer = setInterval(() => {
+                timeLeft--;
+                timerDisplay.textContent = `Time Left: ${timeLeft} seconds`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    moveToNextQuestion();
+                }
+            }, 1000);
+        }
+
+        // Reset Timer
+        function resetTimer() {
+            // Clear previous timer
+            clearInterval(timer);
+            // Reset time
+            timeLeft = 30;
+            // Start new timer
+            startTimer();
+        }
+
+        // End Quiz
+        function endQuiz() {
+            // Clear timer
+            clearInterval(timer);
+
+            // Hide quiz screen
+            quizScreen.style.display = 'none';
+            // Show results screen
+            resultsScreen.style.display = 'block';
+
+            // Display results
+            usernameFinalDisplay.textContent = `Username: ${username}`;
+            scoreFinalDisplay.textContent = `Your Score: ${score} out of ${quizData.length}`;
+        }
+
+        // Reset Quiz
+        function resetQuiz() {
+            // Reset state variables
+            currentQuestion = 0;
+            score = 0;
+            username = '';
+
+            // Reset screens
+            resultsScreen.style.display = 'none';
+            usernameScreen.style.display = 'flex';
+
+            // Reset username input
+            usernameInput.value = '';
+        }
+    </script>
+</body>
+
+</html>

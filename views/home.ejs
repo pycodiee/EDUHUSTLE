@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduHustle - Modern Learning Platform</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
+    <style>
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .rotate-animation {
+            animation: rotate 20s linear infinite;
+        }
+
+        .gradient-text {
+            background: linear-gradient(45deg, #3B82F6, #2563EB);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, #EFF6FF 0%, #c7d5e8 100%);
+        }
+
+        .card {
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+        }
+
+        .scroll-indicator {
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-30px);
+            }
+            60% {
+                transform: translateY(-15px);
+            }
+        }
+
+        .feature-icon {
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.2) rotate(10deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-white/80 backdrop-blur-lg z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0">
+                    <h1 class="text-2xl font-bold gradient-text">EduHustle</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-center space-x-8">
+                        <a href="#" class="text-gray-700 hover:text-blue-600 transition-colors">Features</a>
+                        <a href="#" class="text-gray-700 hover:text-blue-600 transition-colors">Courses</a>
+                        <button class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-colors">
+                            <a href="/logout">logout</a>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section>
+        <div class="relative hero-gradient min-h-screen flex items-center py-16 sm:py-24 lg:py-32">
+          <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover z-0">
+            <source src="/views/videoplayback.mp4" type="video/mp4" />
+          </video>
+      
+          <!-- Parent Container -->
+          <div class="relative flex items-center justify-center w-full h-full px-4 sm:px-8 lg:px-16 xl:px-24">
+            <!-- Child Container -->
+            <div class="text-center space-y-6 sm:space-y-8 lg:space-y-10 bg-white bg-opacity-75 p-4 sm:p-6 lg:p-10 rounded-lg shadow-lg w-full h-full max-w-screen-lg mx-auto flex flex-col justify-center">
+              <h1 
+                class="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 opacity-0 transform translate-y-10 transition-transform duration-700" 
+                id="heroTitle">
+                Transform Your Learning Journey
+              </h1>
+              <p 
+                class="text-sm sm:text-base lg:text-lg xl:text-xl text-gray-700 max-w-xs sm:max-w-md lg:max-w-lg xl:max-w-2xl mx-auto opacity-0 transform translate-y-10 transition-transform duration-700" 
+                id="heroSubtitle">
+                Experience interactive learning like never before with real-time progress tracking and personalized feedback.
+              </p>
+              <div class="space-x-4 opacity-0 transform translate-y-10" id="heroButtons">
+                <a href="/user" class="bg-blue-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-700 transition-all">
+                    Student
+                </a>
+                <a href="/admin" class="bg-blue-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-700 transition-all">
+                    Teacher
+                </a>
+            </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+
+    <!-- Stats Section -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="card bg-blue-50 p-8 rounded-2xl text-center">
+                    <div class="text-4xl font-bold text-blue-600 mb-2 counter" data-target="100">0</div>
+                    <div class="text-gray-600">Expert Courses</div>
+                </div>
+                <div class="card bg-blue-50 p-8 rounded-2xl text-center">
+                    <div class="text-4xl font-bold text-blue-600 mb-2 counter" data-target="50000">0</div>
+                    <div class="text-gray-600">Active Students</div>
+                </div>
+                <div class="card bg-blue-50 p-8 rounded-2xl text-center">
+                    <div class="text-4xl font-bold text-blue-600 mb-2 counter" data-target="95">0</div>
+                    <div class="text-gray-600">Success Rate</div>
+                </div>
+                <div class="card bg-blue-50 p-8 rounded-2xl text-center">
+                    <div class="text-4xl font-bold text-blue-600 mb-2 counter" data-target="1000">0</div>
+                    <div class="text-gray-600">Hours of Content</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center mb-16 gradient-text">Why Choose EduHustle?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div class="feature-card bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="feature-icon w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Interactive Learning</h3>
+                    <p class="text-gray-600">Engage with dynamic content and get real-time feedback on your progress</p>
+                </div>
+                <div class="feature-card bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="feature-icon w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Progress Tracking</h3>
+                    <p class="text-gray-600">Monitor your growth with detailed analytics and performance insights</p>
+                </div>
+                <div class="feature-card bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="feature-icon w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Expert Instruction</h3>
+                    <p class="text-gray-600">Learn from industry professionals with years of experience</p>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+
+    <script>
+        // Initialize GSAP
+// Initialize GSAP
+gsap.registerPlugin(ScrollTrigger);
+// var tl = gsap.timrline();
+// Hero Section Animations
+const heroTimeline = gsap.timeline({
+    defaults: {
+        duration: 1,
+        ease: "power2.out"
+    }
+});
+
+heroTimeline
+    .to("#heroTitle", {
+        opacity: 1,
+        y: 0,
+        stagger:0.5,
+        delay: 0.5
+    })
+    .to("#heroSubtitle", {
+        opacity: 1,
+        y: 0,
+        delay: 0.2
+    }, "-=0.5")
+    .to("#heroButtons", {
+        opacity: 1,
+        y: 0,
+        delay: 0.2
+    }, "-=0.5");
+
+// Counter Animation
+const counters = document.querySelectorAll('.counter');
+counters.forEach(counter => {
+    const target = parseInt(counter.getAttribute('data-target'));
+    const duration = 2000; // 2 seconds
+    const step = target / (duration / 16); // 60fps
+    let current = 0;
+
+    ScrollTrigger.create({
+        trigger: counter,
+        start: "top center+=100",
+        onEnter: () => {
+            const updateCounter = () => {
+                current += step;
+                if (current < target) {
+                    counter.textContent = Math.round(current);
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    counter.textContent = target;
+                }
+            };
+            updateCounter();
+        }
+    });
+});
+
+// Feature Cards Animation
+gsap.from(".feature-card", {
+    scrollTrigger: {
+        trigger: ".feature-card",
+        start: "top center+=100",
+        toggleActions: "play none none reverse"
+    },
+    y: 50,
+    opacity: 0,
+    duration: 1,
+    stagger: 0.2
+});
+
+// Card Hover Animations
+gsap.utils.toArray('.card').forEach(card => {
+    gsap.set(card, { transformOrigin: 'center' });
+    
+    card.addEventListener('mouseenter', () => {
+        gsap.to(card, {
+            scale: 1.05,
+            boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
+            duration: 0.3,
+            ease: 'power1.out'
+        });
+    });
+
+    card.addEventListener('mouseleave', () => {
+        gsap.to(card, {
+            scale: 1,
+            boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+            duration: 0.3,
+            ease: 'power1.in'
+        });
+    });
+});
+    </script>
+    <!-- Footer Section -->
+
+
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @font-face {
+            font-family: pop;
+            src: url(./Fonts/Poppins-Medium.ttf);
+        }
+
+        .main {
+            width: 100%;
+            height: 65vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: pop;
+            flex-direction: column;
+        }
+
+        .head {
+            text-align: center;
+        }
+
+        .head_1 {
+            font-size: 30px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .head_1 span {
+            color: #2a73f0;
+        }
+
+        .head_2 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-top: 3px;
+        }
+
+        ul {
+            display: flex;
+            margin-top: 80px;
+        }
+
+        ul li {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        ul li .icon {
+            font-size: 35px;
+            color: #2a73f0;
+            margin: 0 60px;
+        }
+
+        ul li .text {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2a73f0;
+        }
+
+        /* Progress Div Css */
+        ul li .progress {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.781);
+            margin: 14px 0;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .progress::after {
+            content: " ";
+            position: absolute;
+            width: 125px;
+            height: 5px;
+            background-color: rgba(0, 0, 0, 0.781);
+            right: 30px;
+        }
+
+        .one::after {
+            width: 0;
+            height: 0;
+        }
+
+        ul li .progress .uil {
+            display: none;
+        }
+
+        ul li .progress p {
+            font-size: 13px;
+        }
+
+        /* Active Css */
+        ul li .active {
+            background-color: #2a73f0;
+            display: grid;
+            place-items: center;
+        }
+
+        li .active::after {
+            background-color: #2a73f0;
+        }
+
+        ul li .active p {
+            display: none;
+        }
+
+        ul li .active .uil {
+            font-size: 20px;
+            display: flex;
+        }
+
+        /* Responsive Css */
+        @media (max-width: 980px) {
+            ul {
+                flex-direction: column;
+            }
+
+            ul li {
+                flex-direction: row;
+            }
+
+            ul li .progress {
+                margin: 0 30px;
+            }
+
+            .progress::after {
+                width: 5px;
+                height: 55px;
+                bottom: 30px;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: -1;
+            }
+
+            .one::after {
+                height: 0;
+            }
+
+            ul li .icon {
+                margin: 15px 0;
+            }
+        }
+
+        @media (max-width:600px) {
+            .head .head_1 {
+                font-size: 24px;
+            }
+
+            .head .head_2 {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+
+        <div class="head">
+            <p class="head_1">Animated Step <span>Progress Bar</span></p>
+            <p class="head_2">Perform Analysis</p>
+        </div>
+
+        <ul>
+            <li>
+                <i class="icon uil uil-capture"></i>
+                <div class="progress one">
+                    <p>1</p>
+                    <i class="uil uil-check"></i>
+                </div>
+                <p class="text">Scan📘</p>
+            </li>
+            <li>
+                <i class="icon uil uil-clipboard-notes"></i>
+                <div class="progress two">
+                    <p>2</p>
+                    <i class="uil uil-check"></i>
+                </div>
+                <p class="text">Fill Details</p>
+            </li>
+            <li>
+                <i class="icon uil uil-credit-card"></i>
+                <div class="progress three">
+                    <p>3</p>
+                    <i class="uil uil-check"></i>
+                </div>
+                <p class="text">Make Payment</p>
+            </li>
+            <li>
+                <i class="icon uil uil-exchange"></i>
+                <div class="progress four">
+                    <p>4</p>
+                    <i class="uil uil-check"></i>
+                </div>
+                <p class="text">Order in Progress</p>
+            </li>
+            <li>
+                <i class="icon uil uil-map-marker"></i>
+                <div class="progress five">
+                    <p>5</p>
+                    <i class="uil uil-check"></i>
+                </div>
+                <p class="text">Order Arrived</p>
+            </li>
+        </ul>
+
+    </div>
+
+    <script>
+        const one = document.querySelector(".one");
+        const two = document.querySelector(".two");
+        const three = document.querySelector(".three");
+        const four = document.querySelector(".four");
+        const five = document.querySelector(".five");
+
+        // Array of steps for easier automation
+        const steps = [one, two, three, four, five];
+        let currentStep = 0;  // To track the current step
+
+        // Function to update the progress
+        function updateProgress() {
+            // Remove "active" class from all steps
+            steps.forEach((step) => step.classList.remove("active"));
+
+            // Add "active" class to the current step
+            steps[currentStep].classList.add("active");
+
+            // Increment the step for next interval
+            currentStep++;
+
+            // If the last step is reached, stop the interval
+            if (currentStep >= steps.length) {
+                clearInterval(progressInterval);
+            }
+        }
+
+        // Start the progress tracker
+        const progressInterval = setInterval(updateProgress, 10000); // 10 seconds interval
+    </script>
+</body>
+
+</html>
+
+
+
+
+<footer class="bg-white py-12 border-t border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Logo and Description -->
+            <div>
+                <h2 class="text-2xl font-bold gradient-text mb-4">EduHustle</h2>
+                <p class="text-gray-600 text-sm">
+                    Transforming learning through innovative, interactive experiences.
+                </p>
+            </div>
+      <!-- Quick Links -->
+        <div>
+            <h4 class="font-semibold text-gray-900 mb-6">Quick Links</h4>
+            <div class="grid grid-cols-2 gap-4">
+                <a href="#" class="text-gray-600 hover:text-blue-600 transition-colors">Features</a>
+                <a href="#" class="text-gray-600 hover:text-blue-600 transition-colors">Courses</a>
+                <a href="#" class="text-gray-600 hover:text-blue-600 transition-colors">About</a>
+                <a href="#" class="text-gray-600 hover:text-blue-600 transition-colors">Contact</a>
+            </div>
+        </div>
+
+        <!-- Social and Contact -->
+        <div>
+            <h4 class="font-semibold text-gray-900 mb-6">Connect</h4>
+            <div class="flex space-x-4 items-center">
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-blue-600 transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.148 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.148-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.948-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-blue-600 transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="mt-8 pt-8 border-t border-gray-200 text-center">
+        <p class="text-gray-500 text-sm">
+            © 2024 EduHustle. All rights reserved.
+        </p>
+    </div>
+</div>
+</footer>
+</body>
+</html>

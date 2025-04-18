@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduHustle - Sign Up</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .slide-up {
+            animation: slideUp 0.6s ease-out forwards;
+        }
+        
+        .hover-scale {
+            transition: transform 0.2s ease;
+        }
+        
+        .hover-scale:hover {
+            transform: scale(1.02);
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        
+        .success-message {
+            color: #10b981;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .content-wrapper {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+
+        .left-section {
+            display: none;
+        }
+
+        @media (min-width: 1024px) {
+            .left-section {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding: 2rem;
+                flex: 1;
+            }
+        }
+
+        .text-gradient {
+            background: linear-gradient(to right, #60a5fa, #c084fc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-r from-purple-900 via-blue-900 to-indigo-900">
+    <div id="canvas-container"></div>
+    
+    <div class="content-wrapper">
+        <div class="left-section text-white px-8">
+            <h1 class="text-5xl font-bold mb-6 text-gradient">Welcome to EduHustle</h1>
+            <div class="space-y-6 max-w-xl">
+                <p class="text-xl font-semibold">Transform Your Learning Journey</p>
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <i data-feather="check-circle" class="w-6 h-6 text-blue-400"></i>
+                        <p>Access to premium courses from industry experts</p>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <i data-feather="check-circle" class="w-6 h-6 text-blue-400"></i>
+                        <p>Interactive learning experience with real-time feedback</p>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <i data-feather="check-circle" class="w-6 h-6 text-blue-400"></i>
+                        <p>Join a community of passionate learners</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex items-center justify-center p-4 lg:w-1/2">
+            <div class="glass-effect w-full max-w-md p-8 rounded-2xl shadow-2xl slide-up">
+                <div class="text-center mb-8">
+                    <div class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 mb-6">
+                        EduHustle
+                    </div>
+                </div>
+
+                <div id="error-message" class="error-message text-center mb-4"></div>
+                <div id="success-message" class="success-message text-center mb-4"></div>
+
+                <form class="space-y-6" id="signup-form">
+                    <div>
+                        <label for="fullname" class="block text-black-300 mb-2 font-medium">Full Name</label>
+                        <input type="text" id="fullname" class="w-full px-4 py-2.5 rounded-xl bg-slate-800/50 border border-slate-700 text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <div>
+                        <label for="email" class="block text-black-300 mb-2 font-medium">Email</label>
+                        <input type="email" id="email" class="w-full px-4 py-2.5 rounded-xl bg-slate-800/50 border border-slate-700 text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Enter your email" required>
+                    </div>
+                    
+                    <div>
+                        <label for="password" class="block text-black-300 mb-2 font-medium">Password</label>
+                        <input type="password" id="password" class="w-full px-4 py-2.5 rounded-xl bg-slate-800/50 border border-slate-700 text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Create a strong password" required>
+                        <p class="text-xs text-gray-400 mt-1">At least 8 characters, mix of letters and numbers</p>
+                    </div>
+                    
+                    <div>
+                        <label for="confirm-password" class="block text-black-300 mb-2 font-medium">Confirm Password</label>
+                        <input type="password" id="confirm-password" class="w-full px-4 py-2.5 rounded-xl bg-slate-800/50 border border-slate-700 text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Confirm your password" required>
+                    </div>
+
+                    <button type="submit" class="hover-scale w-full py-3 px-6 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 text-black font-semibold flex items-center justify-center space-x-2 transition-all hover:shadow-lg" id="submit-btn">
+                        <span>Create Account</span>
+                        <i data-feather="user-plus" class="w-5 h-5"></i>
+                    </button>
+                </form>
+
+                <div class="my-6 flex items-center">
+                    <div class="flex-grow border-t border-gray-700"></div>
+                    <span class="mx-4 text-gray-400">or</span>
+                    <div class="flex-grow border-t border-gray-700"></div>
+                </div>
+
+                <button id="google-signup" class="hover-scale w-full py-3 px-6 rounded-xl bg-slate-800/50 border border-slate-700 text-white font-semibold flex items-center justify-center space-x-2 transition-all hover:shadow-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48" aria-hidden="true" class="mr-2">
+                        <path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/>
+                        <path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.32-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/>
+                        <path fill="#FBBC05" d="M11.68 28.18c-.44-1.32-.69-2.72-.69-4.18s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24c0 3.55.85 6.91 2.34 9.88l7.34-5.7z"/>
+                        <path fill="#EA4335" d="M24 9.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 3.18 29.93 1 24 1 15.4 1 7.96 5.93 4.34 14.12l7.34 5.7c1.74-5.2 6.59-9.07 12.32-9.07z"/>
+                    </svg>
+                    <span>Sign up with Google</span>
+                </button>
+
+                <div class="text-center mt-6 text-gray-400">
+                    Already have an account? <a href="/login" class="text-blue-400 hover:text-blue-300 transition-colors">Sign In</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Feather Icons
+        feather.replace();
+
+        // Form elements
+        const form = document.getElementById('signup-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const errorMessage = document.getElementById('error-message');
+        const successMessage = document.getElementById('success-message');
+
+        // Form validation and submission
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Reset messages
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+            
+            // Get form values
+            const fullname = document.getElementById('fullname').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            
+            // Validation
+            if (!fullname || !email || !password || !confirmPassword) {
+                showError('All fields are required');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showError('Passwords do not match');
+                return;
+            }
+            
+            if (password.length < 8) {
+                showError('Password must be at least 8 characters long');
+                return;
+            }
+
+            if (!/\d/.test(password) || !/[a-zA-Z]/.test(password)) {
+                showError('Password must contain both letters and numbers');
+                return;
+            }
+
+            // Disable submit button and show loading state
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i data-feather="loader" class="animate-spin w-5 h-5"></i><span>Creating Account...</span>';
+            feather.replace();
+            
+            try {
+                // Send data to server
+                const response = await fetch('/api/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        fullName: fullname,
+                        email: email,
+                        password: password
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.message || 'Error creating account');
+                }
+
+                // Show success message
+                showSuccess('Account created successfully! Redirecting to login...');
+                
+                // Reset form
+                form.reset();
+                
+                // Redirect to login page after 2 seconds
+                setTimeout(() => {
+                    window.location.href = '/login';
+                }, 2000);
+
+            } catch (error) {
+                showError(error.message || 'Error creating account. Please try again.');
+            } finally {
+                // Reset button state
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<span>Create Account</span><i data-feather="user-plus" class="w-5 h-5"></i>';
+                feather.replace();
+            }
+        });
+
+        // Google Sign-Up button event listener
+        document.getElementById('google-signup').addEventListener('click', () => {
+            window.location.href = '/auth/google';
+        });
+
+        // Helper functions to show messages
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            successMessage.style.display = 'none';
+        }
+
+        function showSuccess(message) {
+            successMessage.textContent = message;
+            successMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+        }
+
+        // Three.js सेटअप
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        const container = document.getElementById('canvas-container');
+        
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        container.appendChild(renderer.domElement);
+
+        // जियोमेट्री बनाएं
+        const particles = new THREE.BufferGeometry();
+        const particleCount = 1000;
+        
+        const positions = new Float32Array(particleCount * 3);
+        const colors = new Float32Array(particleCount * 3);
+
+        for(let i = 0; i < particleCount * 3; i += 3) {
+            positions[i] = (Math.random() - 0.5) * 10;
+            positions[i + 1] = (Math.random() - 0.5) * 10;
+            positions[i + 2] = (Math.random() - 0.5) * 10;
+            
+            colors[i] = Math.random();
+            colors[i + 1] = Math.random();
+            colors[i + 2] = Math.random();
+        }
+
+        particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        particles.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+        const particleMaterial = new THREE.PointsMaterial({
+            size: 0.05,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.8
+        });
+
+        const particleSystem = new THREE.Points(particles, particleMaterial);
+        scene.add(particleSystem);
+
+        camera.position.z = 5;
+
+        // एनिमेशन फंक्शन
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            particleSystem.rotation.x += 0.001;
+            particleSystem.rotation.y += 0.001;
+            
+            renderer.render(scene, camera);
+        }
+
+        // विंडो रीसाइज हैंडलर
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        animate();
+    </script>
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Skills and Chatbot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #1a1a2e;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            color: white;
+        }
+
+        #threejs-container {
+            width: 50%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #chatbot-container {
+            width: 40%;
+            height: 80%;
+            background: #222f3e;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        #chat-header {
+            padding: 10px 15px;
+            background: #10ac84;
+            border-radius: 10px 10px 0 0;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        #chat-body {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .chat-message {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 20px;
+        }
+
+        .bot-message {
+            background: #576574;
+            align-self: flex-start;
+        }
+
+        .user-message {
+            background: #1dd1a1;
+            align-self: flex-end;
+        }
+
+        #chat-input-container {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #576574;
+        }
+
+        #chat-input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 20px;
+            outline: none;
+        }
+
+        #send-button {
+            margin-left: 10px;
+            padding: 10px 15px;
+            background: #10ac84;
+            border: none;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Left: Skills Logo -->
+    <div id="threejs-container"></div>
+
+    <!-- Right: Chatbot -->
+    <div id="chatbot-container">
+        <div id="chat-header">Chatbot</div>
+        <div id="chat-body">
+            <!-- Messages will appear here -->
+            <div class="chat-message bot-message">Hello! How can I help you today?</div>
+        </div>
+        <div id="chat-input-container">
+            <input type="text" id="chat-input" placeholder="Type a message..." />
+            <button id="send-button">Send</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Three.js setup
+        const container = document.getElementById("threejs-container");
+        const width = container.clientWidth;
+        const height = window.innerHeight;
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(width, height);
+        container.appendChild(renderer.domElement);
+
+        camera.position.z = 5;
+
+        // Skill logos as textures
+        const logos = [
+            "https://upload.wikimedia.org/wikipedia/commons/3/3d/Logo_html5.svg", // HTML
+            "https://upload.wikimedia.org/wikipedia/commons/d/d5/CSS3_logo_and_wordmark.svg", // CSS
+            "https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png", // JS
+            "https://upload.wikimedia.org/wikipedia/commons/1/19/C_Logo.png", // C
+            "https://upload.wikimedia.org/wikipedia/commons/1/18/C_Programming_Language.svg", // C++
+            "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg", // React
+            "https://upload.wikimedia.org/wikipedia/commons/d/db/Npm-logo.svg", // NPM
+            "https://upload.wikimedia.org/wikipedia/commons/4/48/Markdown-mark.svg" // Markdown
+        ];
+
+        // Create a sphere of logos
+        const group = new THREE.Group();
+        logos.forEach((logoUrl, index) => {
+            const texture = new THREE.TextureLoader().load(logoUrl);
+            const material = new THREE.SpriteMaterial({ map: texture });
+            const sprite = new THREE.Sprite(material);
+
+            // Position the sprites in a circular shape
+            const angle = (index / logos.length) * Math.PI * 2;
+            sprite.position.set(Math.cos(angle) * 2, Math.sin(angle) * 2, 0);
+            sprite.scale.set(0.5, 0.5, 1); // Adjust logo size
+            group.add(sprite);
+        });
+        scene.add(group);
+
+        // Animation
+        function animate() {
+            requestAnimationFrame(animate);
+            group.rotation.y += 0.01; // Rotate the circle
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Chatbot functionality
+        const chatInput = document.getElementById("chat-input");
+        const sendButton = document.getElementById("send-button");
+        const chatBody = document.getElementById("chat-body");
+
+        function addMessage(message, isUser = true) {
+            const messageDiv = document.createElement("div");
+            messageDiv.classList.add("chat-message");
+            messageDiv.classList.add(isUser ? "user-message" : "bot-message");
+            messageDiv.textContent = message;
+            chatBody.appendChild(messageDiv);
+            chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll
+        }
+
+        sendButton.addEventListener("click", () => {
+            const userMessage = chatInput.value.trim();
+            if (userMessage) {
+                addMessage(userMessage, true);
+                chatInput.value = "";
+
+                // Simulate bot response
+                setTimeout(() => {
+                    addMessage("I'm here to assist you!", false);
+                }, 1000);
+            }
+        });
+
+        chatInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                sendButton.click();
+            }
+        });
+    </script>
+</body>
+
+</html>
